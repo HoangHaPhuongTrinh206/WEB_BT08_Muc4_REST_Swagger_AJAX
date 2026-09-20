@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+    <!-- Áp dụng layout admin.jsp cho các trang quản trị -->
+    <mapping path="/admin/*" decorator="/decorators/admin.jsp"/>
+
+    <!-- Áp dụng layout login.jsp cho trang đăng nhập, đăng ký -->
+    <mapping path="/login" decorator="/decorators/login.jsp"/>
+    <mapping path="/register" decorator="/decorators/login.jsp"/>
+
+    <!-- Áp dụng layout web.jsp cho các trang người dùng thông thường -->
+    <mapping path="/*" decorator="/decorators/web.jsp"/>
+</sitemesh>
