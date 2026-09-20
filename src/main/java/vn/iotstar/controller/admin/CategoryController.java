@@ -6,14 +6,22 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import vn.iotstar.model.Category;
+import vn.iotstar.entity.Category;
 import vn.iotstar.service.ICategoryService;
 
 @Controller
@@ -32,7 +40,7 @@ public class CategoryController {
 
     // Hiển thị form edit
     @GetMapping("edit/{categoryId}")
-    public ModelAndView edit(ModelMap model, @PathVariable("categoryId") Integer categoryId) {
+    public ModelAndView edit(ModelMap model, @PathVariable("categoryId") Long categoryId) {
         Optional<Category> optCategory = categoryService.findById(categoryId);
         if (optCategory.isPresent()) {
             model.addAttribute("category", optCategory.get());
@@ -53,7 +61,7 @@ public class CategoryController {
 
     // Xóa
     @GetMapping("delete/{categoryId}")
-    public ModelAndView delete(ModelMap model, @PathVariable("categoryId") Integer categoryId) {
+    public ModelAndView delete(ModelMap model, @PathVariable("categoryId") Long categoryId) {
         categoryService.deleteById(categoryId);
         model.addAttribute("message", "Category is deleted!");
         return new ModelAndView("forward:/admin/categories/searchpaginated", model);
@@ -90,7 +98,7 @@ public class CategoryController {
         model.addAttribute("categoryPage", resultPage);
         return "admin/categories/searchpaginated";
     }
-    
+
     @GetMapping("ajax")
     public String ajax() {
         return "admin/categories/ajax";   // templates/admin/categories/ajax.html

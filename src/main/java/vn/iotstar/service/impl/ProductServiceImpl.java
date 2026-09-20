@@ -1,51 +1,76 @@
 package vn.iotstar.service.impl;
 
 import java.util.List;
-import vn.iotstar.dao.ProductDao;
-import vn.iotstar.dao.impl.ProductDaoImpl;
-import vn.iotstar.model.Product;
-import vn.iotstar.service.ProductService;
+import java.util.Optional;
 
-public class ProductServiceImpl implements ProductService {
-    private ProductDao productDao = new ProductDaoImpl();
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import vn.iotstar.entity.Product;
+import vn.iotstar.repository.ProductRepository;
+import vn.iotstar.service.IProductService;
+
+@Service
+public class ProductServiceImpl implements IProductService {
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Override
-    public List<Product> getAll() {
-        return productDao.getAll();
+    public List<Product> findAll() {
+        return productRepository.findAll();
     }
 
     @Override
-    public Product get(int id) {
-        return productDao.get(id);
+    public List<Product> findAll(Sort sort) {
+        return productRepository.findAll(sort);
     }
 
     @Override
-    public void insert(Product product) {
-        productDao.insert(product);
+    public Page<Product> findAll(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 
     @Override
-    public void update(Product product) {
-        productDao.update(product);
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
     }
 
     @Override
-    public void delete(int id) {
-        productDao.delete(id);
+    public Optional<Product> findByProductName(String name) {
+        return productRepository.findByProductName(name);
     }
 
     @Override
-    public List<Product> get10NewestProducts() {
-        return productDao.get10NewestProducts();
+    public List<Product> findByCategoryId(Long categoryId, Sort sort) {
+        return productRepository.findByCategory_CategoryId(categoryId, sort);
     }
 
     @Override
-    public List<Product> getProductsByPage(int offset, int limit) {
-        return productDao.getProductsByPage(offset, limit);
+    public Page<Product> findByProductNameContaining(String name, Pageable pageable) {
+        return productRepository.findByProductNameContaining(name, pageable);
     }
 
     @Override
-    public long getTotalProducts() {
-        return productDao.getTotalProducts();
+    public Product save(Product product) {
+        return productRepository.save(product);
+    }
+
+    @Override
+    public void delete(Product product) {
+        productRepository.delete(product);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        productRepository.deleteById(id);
+    }
+
+    @Override
+    public long count() {
+        return productRepository.count();
     }
 }
